@@ -58,8 +58,7 @@ public class Match3Visual : MonoBehaviour
         this.match3 = sender as Match3;
         this.grid = e.grid;
 
-        float cameraYOffset = -1f;
-        cameraTransform.position = new Vector3(grid.GetWidth() * .5f, grid.GetHeight() * .5f + cameraYOffset, cameraTransform.position.z);
+        cameraTransform.position = new Vector3(grid.GetWidth() * .5f, grid.GetHeight() * .5f, cameraTransform.position.z);
 
         match3.OnGemGridPositionDestroyed += Match3_OnGemGridPositionDestroyed;
         match3.OnNewGemGridSpawned += Match3_OnNewGemGridSpawned;
