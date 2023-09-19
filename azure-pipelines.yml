@@ -1,0 +1,30 @@
+trigger:
+- '*'
+
+pr:
+- '*'
+
+pool:
+  vmImage: 'windows-latest' # Use Windows image for Unity projects
+
+jobs:
+- job: BuildAndTest
+  displayName: 'Build and Test Unity Project'
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+      addToPath: true
+
+  - powershell: |
+      # Set the Unity version (modify as needed)
+      $UNITY_VERSION = "2023.3.21f1"
+
+      # Download and install Unity
+      Invoke-WebRequest -Uri "https://download.unity3d.com/download_unity/$UNITY_VERSION/Windows64EditorInstaller/UnitySetup64.exe" -OutFile "UnitySetup64.exe"
+      Start-Process -Wait -FilePath "UnitySetup64.exe" -ArgumentList "/S /D=C:\Unity"
+      Remove-Item -Force "UnitySetup64.exe"
+
+      # Run Unity project unit tests
+      & "C:\Unity\Editor\Unity.exe" -runTests -projectPath "$(Build.SourcesDirectory)"
+    displayName: 'Build and Test Unity Project'
